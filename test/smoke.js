@@ -25,10 +25,12 @@ const { waitForServer, buildWindowsLauncherVbs, DEFAULT_PORT } = require('../lib
   )
 
   // 3. Windows VBS launcher content is correct.
-  const vbs = buildWindowsLauncherVbs('dsh-quickstart', DEFAULT_PORT, 'D:\\DHS')
-  assert.ok(vbs.includes('dsh-quickstart --port 3080'), 'vbs should carry command + port')
+  const vbs = buildWindowsLauncherVbs({ dshCommand: 'dsh', dshArgs: ['web'], port: DEFAULT_PORT, workingDir: 'D:\\DHS' })
+  assert.ok(vbs.includes('cmd /c dsh web'), 'vbs should carry the dsh command')
   assert.ok(vbs.includes('WScript.Shell'), 'vbs should create the shell object')
   assert.ok(vbs.includes('D:\\DHS'), 'vbs should set the working directory')
+  assert.ok(vbs.includes('MSXML2.XMLHTTP'), 'vbs should poll readiness')
+  assert.ok(vbs.includes('http://127.0.0.1:3080'), 'vbs should target the web UI')
 
   console.log('smoke PASS')
 })().catch((e) => {
