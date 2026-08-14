@@ -86,11 +86,12 @@ Shortcut-only: `--name`, `--icon`, `--working-dir`, `--output`.
 
 ## How it works
 
-1. `startDsh` spawns `dsh web` detached with `windowsHide: true` (no console window).
+1. `startDsh` spawns `dsh web` so it inherits the launcher's (hidden) console.
 2. `waitForServer` polls the port every second until the server answers (or times out).
 3. `openBrowser` opens the URL with the platform default (`start` / `open` / `xdg-open`).
-4. On Windows, `shortcut` writes a tiny `.vbs` that hides the launcher's own console,
-   plus a `.lnk` pointing at it — so double-clicking shows nothing but the browser.
+4. On Windows, `shortcut` writes a tiny `.vbs` that runs the launcher inside a
+   hidden console, plus a `.lnk` pointing at it — so double-clicking shows nothing
+   but the browser.
 
 ## Icons / assets
 
