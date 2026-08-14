@@ -4,11 +4,11 @@
   <img src="https://raw.githubusercontent.com/qzhqzh/dsh-quickstart/main/assets/dsh.png" width="180" alt="DeepSeek Harness quick launcher icon" />
 </p>
 
-Launch [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh web`)
-**without a console window**, then **open the browser automatically** once the web UI
-is ready. Cross-platform, zero dependencies.
+**A Windows-first launcher** for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness):
+double-click a desktop icon and `dsh web` starts **without a console window**, then the
+browser **opens automatically** once the web UI is ready.
 
-Stop typing `npx @deepseek-ai/dsh web` and waiting for the page by hand — this
+No more typing `npx @deepseek-ai/dsh web` and waiting for the page by hand — this
 double-click-and-go wrapper handles startup, readiness polling, and browser opening.
 
 ## Why
@@ -50,18 +50,16 @@ dsh-quickstart --no-wait
 dsh-quickstart -- web --port 3000
 ```
 
-Install a desktop shortcut (double-click to launch, no console window):
+Install a **desktop shortcut** — the primary way to use it on Windows. Double-click to
+launch, no console window, and it uses the bundled DSH icon by default:
 
 ```bash
-# Windows (.lnk), with an .ico
-dsh-quickstart shortcut --name "DeepSeek" --icon "C:\path\to\icon.ico" --working-dir "D:\your\workdir"
-
-# macOS (.command)
-dsh-quickstart shortcut --name "DeepSeek"
-
-# Linux (.desktop)
-dsh-quickstart shortcut --name "DeepSeek"
+# Windows (.lnk)
+dsh-quickstart shortcut --name "DeepSeek" --working-dir "D:\your\workdir"
 ```
+
+> macOS (`.command`) and Linux (`.desktop`) shortcuts are also supported, but
+> **Windows is the first-class target** — hidden console + desktop icon is the whole point.
 
 ## Options
 
