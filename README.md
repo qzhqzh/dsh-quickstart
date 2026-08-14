@@ -4,9 +4,12 @@
   <img src="https://raw.githubusercontent.com/qzhqzh/dsh-quickstart/main/assets/dsh.png" width="180" alt="DeepSeek Harness quick launcher icon" />
 </p>
 
-**A Windows-first launcher** for [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness):
-double-click a desktop icon and `dsh web` starts **without a console window**, then the
-browser **opens automatically** once the web UI is ready.
+Launch [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) from a
+desktop icon — `dsh web` starts **without a console window**, then the browser
+**opens automatically** once the web UI is ready.
+
+> **Status:** implemented and tested on **Windows**. macOS and Linux are in the
+> codebase but **not yet tested** — see [Roadmap](#roadmap).
 
 No more typing `npx @deepseek-ai/dsh web` and waiting for the page by hand — this
 double-click-and-go wrapper handles startup, readiness polling, and browser opening.
@@ -58,8 +61,8 @@ launch, no console window, and it uses the bundled DSH icon by default:
 dsh-quickstart shortcut --name "DeepSeek" --working-dir "D:\your\workdir"
 ```
 
-> macOS (`.command`) and Linux (`.desktop`) shortcuts are also supported, but
-> **Windows is the first-class target** — hidden console + desktop icon is the whole point.
+> macOS (`.command`) and Linux (`.desktop`) shortcuts are implemented but **untested
+> (TODO)** — Windows is currently the only fully verified platform.
 
 ## Options
 
@@ -94,6 +97,12 @@ The project ships its icon assets in `assets/`:
 on Windows already carries the DSH look. Override it with `--icon <path>` if you
 want your own. More icon assets (alternate sizes, variants) can be dropped into
 `assets/` following the same `dsh.png` / `dsh.ico` convention.
+
+## Roadmap
+
+- [x] **Windows** — hidden-console launch, readiness polling, auto-open browser, desktop shortcut
+- [ ] **macOS** — verify and polish the `.command` shortcut flow
+- [ ] **Linux** — verify and polish the `.desktop` shortcut flow
 
 ## License
 
