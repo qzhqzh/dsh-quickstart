@@ -1,0 +1,6 @@
+node_modules/
+*.tgz
+*.log
+.npm-cache-tmp/
+test-out/
+.DS_Store
