@@ -14,6 +14,14 @@ desktop icon — `dsh web` starts **without a console window**, then the browser
 No more typing `npx @deepseek-ai/dsh web` and waiting for the page by hand — this
 double-click-and-go wrapper handles startup, readiness polling, and browser opening.
 
+## Preview
+
+The desktop shortcut you get — double-click the icon to launch:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/qzhqzh/dsh-quickstart/main/assets/desktop-icon.png" alt="DeepSeek desktop shortcut" />
+</p>
+
 ## Why
 
 - `dsh web` blocks a terminal window and gives no feedback on when it is ready.
@@ -92,6 +100,7 @@ The project ships its icon assets in `assets/`:
 | --- | --- |
 | `assets/dsh.png` | Source icon — transparent background, 1254×1254 |
 | `assets/dsh.ico` | Multi-size Windows icon (256/128/64/48/32/16) generated from `dsh.png` |
+| `assets/desktop-icon.png` | Real screenshot of the desktop shortcut (shown in the Preview above) |
 
 `dsh-quickstart shortcut` uses the bundled icon by default, so a shortcut created
 on Windows already carries the DSH look. Override it with `--icon <path>` if you
