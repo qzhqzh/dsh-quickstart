@@ -1,5 +1,9 @@
 # dsh-quickstart
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/qzhqzh/dsh-quickstart/main/assets/dsh.png" width="180" alt="DeepSeek Harness quick launcher icon" />
+</p>
+
 Launch [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (`dsh web`)
 **without a console window**, then **open the browser automatically** once the web UI
 is ready. Cross-platform, zero dependencies.
