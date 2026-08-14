@@ -79,6 +79,20 @@ Shortcut-only: `--name`, `--icon`, `--working-dir`, `--output`.
 4. On Windows, `shortcut` writes a tiny `.vbs` that hides the launcher's own console,
    plus a `.lnk` pointing at it — so double-clicking shows nothing but the browser.
 
+## Icons / assets
+
+The project ships its icon assets in `assets/`:
+
+| File | Description |
+| --- | --- |
+| `assets/dsh.png` | Source icon — transparent background, 1254×1254 |
+| `assets/dsh.ico` | Multi-size Windows icon (256/128/64/48/32/16) generated from `dsh.png` |
+
+`dsh-quickstart shortcut` uses the bundled icon by default, so a shortcut created
+on Windows already carries the DSH look. Override it with `--icon <path>` if you
+want your own. More icon assets (alternate sizes, variants) can be dropped into
+`assets/` following the same `dsh.png` / `dsh.ico` convention.
+
 ## License
 
 MIT

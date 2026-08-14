@@ -9,6 +9,7 @@
   "files": [
     "bin",
     "lib",
+    "assets",
     "README.md",
     "LICENSE"
   ],
