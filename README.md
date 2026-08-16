@@ -81,8 +81,35 @@ dsh-quickstart shortcut --name "DeepSeek" --working-dir "D:\your\workdir"
 | `--command <cmd>` | `dsh` | Command used to start dsh (e.g. `npx @deepseek-ai/dsh`) |
 | `--no-open` | — | Do not open the browser |
 | `--no-wait` | — | Exit immediately after spawning |
+| `--watch` | — | Enable watchdog mode (overrides config) |
+| `--no-watch` | — | Disable watchdog mode (overrides config) |
+| `--max-restarts <n>` | `10` | Give up after n restarts (watchdog) |
+| `--restart-delay <ms>` | `3000` | Delay between restarts (watchdog) |
 
 Shortcut-only: `--name`, `--icon`, `--working-dir`, `--output`.
+
+## Watchdog mode (opt-in)
+
+By default `dsh-quickstart` is a **plain launch**: it starts `dsh web`, waits,
+opens the browser, and exits — the dsh process keeps running on its own. To have
+dsh **auto-restart** when it exits (for example after installing a plugin that
+needs a restart), opt into the watchdog explicitly:
+
+```bash
+# one-off
+dsh-quickstart watch
+
+# or make it the default for every bare `dsh-quickstart` run
+# ~/.dsh-quickstart.json
+{ "watch": true, "maxRestarts": 10, "restartDelayMs": 3000 }
+```
+
+The watchdog stays alive, restarts dsh up to `maxRestarts` times on exit, opens
+the browser on the first ready, and keeps the URL. `--watch` / `--no-watch` on the
+command line override the config. Stop it with Ctrl-C (or SIGTERM).
+
+> The watchdog deliberately stays **off by default** — it must be enabled by an
+> explicit `watch` command, `--watch`, or `"watch": true` in the config.
 
 ## How it works
 
@@ -108,11 +135,65 @@ on Windows already carries the DSH look. Override it with `--icon <path>` if you
 want your own. More icon assets (alternate sizes, variants) can be dropped into
 `assets/` following the same `dsh.png` / `dsh.ico` convention.
 
+## Linux quick start
+
+Linux already runs the same commands; only the "desktop double-click" surface
+differs. Three layers, from simplest to most "always-on":
+
+```bash
+# 1. Command line (cross-platform, works today)
+dsh-quickstart
+
+# 2. Desktop / app-menu icon (.desktop file)
+dsh-quickstart shortcut --name "DeepSeek"
+#    writes ~/.local/share/applications/deepseek.desktop — double-click it,
+#    or find "DeepSeek" in the desktop app menu (GNOME/KDE)
+
+# 3. Watchdog (opt-in auto-restart; see above)
+dsh-quickstart watch
+```
+
+For a **systemd user service** (crash-restart + optional login auto-start, the
+Linux equivalent of a Windows service), a minimal unit is:
+
+```ini
+# ~/.config/systemd/user/dsh-web.service
+[Unit]
+Description=DeepSeek Harness web GUI
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=dsh web
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target
+```
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now dsh-web.service   # start + auto-start on login
+loginctl enable-linger $USER                     # optional: run before login too
+```
+
 ## Roadmap
 
 - [x] **Windows** — hidden-console launch, readiness polling, auto-open browser, desktop shortcut
+- [x] **Watchdog mode** — opt-in `watch` command + `watch: true` config (all platforms)
+- [x] **Settings plugin** — companion `dsh-quickstart-plugin` (快速开始 card in 设置 → 插件 → 插件配置)
 - [ ] **macOS** — verify and polish the `.command` shortcut flow
 - [ ] **Linux** — verify and polish the `.desktop` shortcut flow
+
+## Contributing
+
+欢迎贡献！请先阅读 [贡献指南](CONTRIBUTING.md) 了解开发流程、提交规范与 PR 检查清单。
+
+## Security
+
+安全漏洞请勿在公开 Issue 提交，请走仓库页 **Security → Report a vulnerability**。详见 [安全政策](SECURITY.md)。
 
 ## License
 
