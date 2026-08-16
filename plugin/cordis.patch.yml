@@ -1,0 +1,5 @@
+# dsh-quickstart-plugin — 设置 → 插件 → 插件配置 → 「快速开始」页。
+# Host half 提供 /api/dsh-quickstart/* 配置读写与重启路由；client half 渲染守护开关。
+- insert:
+    - id: dsh-quickstart-ui
+      name: dsh-quickstart-plugin

@@ -1,0 +1,28 @@
+{
+  "name": "dsh-quickstart-plugin",
+  "version": "0.1.0",
+  "description": "DSH web settings page for dsh-quickstart: toggle the watchdog mode and restart dsh. 配套 dsh-quickstart 的设置页插件：一键切换守护模式并重启。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "slots"
+      ]
+    }
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml"
+  ],
+  "license": "MIT"
+}
