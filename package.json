@@ -1,6 +1,6 @@
 {
   "name": "dsh-quickstart",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Desktop launcher for DeepSeek Harness — start dsh web with no console window and auto-open the browser. Tested on Windows; macOS/Linux in progress.",
   "bin": {
     "dsh-quickstart": "bin/dsh-quickstart.js"
