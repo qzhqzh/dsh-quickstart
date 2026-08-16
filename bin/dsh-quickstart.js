@@ -3,9 +3,13 @@
 
 const {
   launch,
+  watch,
+  loadConfig,
   installShortcut,
   DEFAULT_PORT,
   DEFAULT_TIMEOUT,
+  DEFAULT_MAX_RESTARTS,
+  DEFAULT_RESTART_DELAY_MS,
 } = require('../lib')
 const pkg = require('../package.json')
 
@@ -14,9 +18,13 @@ console window, then open the browser as soon as it is ready.
 
 Usage:
   dsh-quickstart [options]           start dsh web, wait, open browser
+  dsh-quickstart watch [options]     run dsh under a watchdog (auto-restart)
   dsh-quickstart shortcut [options]  install a desktop shortcut
   dsh-quickstart --help              show this help
   dsh-quickstart --version           print version
+
+The default command stays a plain launch. To opt into the watchdog by default,
+set "watch": true in ~/.dsh-quickstart.json. --watch / --no-watch override it.
 
 Launch options:
   --port <n>       port to wait on           (default ${DEFAULT_PORT})
@@ -25,6 +33,12 @@ Launch options:
   --no-open        do not open the browser
   --no-wait        exit immediately after spawning, without polling
   -- <args...>     extra args passed to dsh  (default "web")
+
+Watch options (dsh-quickstart watch, or default when watch:true in config):
+  --watch          enable watchdog mode (overrides config)
+  --no-watch       disable watchdog mode (overrides config)
+  --max-restarts <n>   give up after n restarts  (default ${DEFAULT_MAX_RESTARTS})
+  --restart-delay <ms> delay between restarts    (default ${DEFAULT_RESTART_DELAY_MS})
 
 Shortcut options:
   --name <n>       shortcut label            (default "DeepSeek")
@@ -49,6 +63,9 @@ function parseLaunch(argv) {
     command: 'dsh',
     dshArgs: ['web'],
     wait: true,
+    watch: undefined,
+    maxRestarts: DEFAULT_MAX_RESTARTS,
+    restartDelayMs: DEFAULT_RESTART_DELAY_MS,
   }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
@@ -57,12 +74,18 @@ function parseLaunch(argv) {
     else if (a === '--command') opts.command = argv[++i]
     else if (a === '--no-open') opts.open = false
     else if (a === '--no-wait') opts.wait = false
+    else if (a === '--watch') opts.watch = true
+    else if (a === '--no-watch') opts.watch = false
+    else if (a === '--max-restarts') opts.maxRestarts = Number(argv[++i])
+    else if (a === '--restart-delay') opts.restartDelayMs = Number(argv[++i])
     else if (a === '--') { opts.dshArgs = argv.slice(i + 1); break }
     else if (a.startsWith('-')) fail('unknown option: ' + a)
     else { opts.dshArgs = argv.slice(i); break }
   }
   if (!Number.isFinite(opts.port)) fail('--port must be a number')
   if (!Number.isFinite(opts.timeout)) fail('--timeout must be a number')
+  if (!Number.isFinite(opts.maxRestarts) || opts.maxRestarts < 0) fail('--max-restarts must be a non-negative number')
+  if (!Number.isFinite(opts.restartDelayMs) || opts.restartDelayMs < 0) fail('--restart-delay must be a non-negative number')
   return opts
 }
 
@@ -105,7 +128,24 @@ async function main() {
     return
   }
 
-  const opts = parseLaunch(argv)
+  // `dsh-quickstart watch` explicitly opts into the watchdog. The bare command
+  // stays a plain launch unless the user sets watch:true in the config file
+  // (or passes --watch). --no-watch always forces plain launch.
+  const isWatchCommand = argv[0] === 'watch'
+  const opts = parseLaunch(isWatchCommand ? argv.slice(1) : argv)
+
+  const config = loadConfig()
+  const wantWatch = isWatchCommand
+    ? true
+    : opts.watch !== undefined
+      ? opts.watch
+      : config.watch === true
+
+  if (wantWatch) {
+    watch(opts)
+    return
+  }
+
   const { url } = await launch(opts)
   process.stdout.write(`DSH ready at ${url}${opts.open ? ' — browser opened' : ''}\n`)
 }
