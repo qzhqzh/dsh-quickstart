@@ -226,11 +226,11 @@ window.__ModuleLoader__.load({
 
     function apply(ctx) {
       // 第一层：插件配置列表里的一张卡片，声明自己的配置项子 slot。
+      // rc.7：settings.plugin.item 改为 keyed slot，必须用 key（旧 id/order/label 会抛
+      // "keyed slot requires options.key"）。
       ctx.slots.inject("settings.plugin.item", () => ctx.slots.register({
         name: "settings.plugin.item",
-        id: "quickstart",
-        order: 30,
-        label: "快速开始",
+        key: "quickstart",
         children: {
           "quickstart.config.item": { kind: "list", scope: "root" },
         },

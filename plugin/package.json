@@ -1,6 +1,6 @@
 {
   "name": "dsh-quickstart-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "DSH web settings page for dsh-quickstart: toggle the watchdog mode and restart dsh. 配套 dsh-quickstart 的设置页插件：一键切换守护模式并重启。",
   "type": "module",
   "main": "lib/index.js",
